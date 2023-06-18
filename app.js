@@ -1,17 +1,34 @@
 import express from 'express';
 import userRouter from './routes/user.js'
-import {config} from 'dotenv'
+import taskRouter from './routes/task.js'
+import { config } from 'dotenv'
+import cookieParser from 'cookie-parser';
+import { errorMiddleware } from './middlewares/error.js';
+import cors from "cors"
+
 config({
-    path:'./data/config.env'
+    path: './data/config.env'
 })
 
 
 export const app = express();
-const router = express.Router()
 
-// using middleware
+
+// using middleware   always use middleware before any routes
 app.use(express.json());
-app.use("/users",userRouter)
+app.use(cookieParser())
+app.use(cors(
+    {
+        origin: [process.env.FRONTEND_URL],
+        methods: ["GET", "PUT", "POST", "DELETE"],
+        credentials: true,
+    }
+))
+
+// using routes
+app.use("/api/v1/users", userRouter)
+app.use("/api/v1/task", taskRouter)
+
 
 
 app.get('/', (req, res) => {
@@ -21,3 +38,7 @@ app.get('/', (req, res) => {
 
 
 
+/* This is a middleware function that handles errors. If any error occurs in the application, it will
+be passed to this function. The function then sets the HTTP status code to 404 and returns a JSON
+response with a success property set to false and a message property containing the error message. */
+app.use(errorMiddleware) 

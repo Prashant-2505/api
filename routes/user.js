@@ -1,22 +1,23 @@
 import express from "express"
-import { getAllUser, getUserDetails, register } from "../controller/user.js";
+import {  login,logout, register,getMyProfile} from "../controller/user.js";
+import { isAuthenticates } from "../middlewares/auth.js";
 const router = express.Router();
 
-router.get('/all', getAllUser);
 
 
 
-router.get('/userid/special', (req, res) => {
-    res.json({
-        success: true,
-        meesage: "just joking"
-    })
-})
+router.post('/new', register);
+router.post('/login', login);
+router.get('/logout', logout);
+router.get('/me',isAuthenticates,getMyProfile);
 
-router.get('/userid/:id',getUserDetails);
+// router.put('/userid/:id',updateUser);
+
+// router.delete('/userid/:id',deleteUser);
 
 
-router.post('/new',register);
+
+
 
 
 export default router;
