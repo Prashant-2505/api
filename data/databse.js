@@ -6,6 +6,6 @@ export const connectDb = () => {
         .connect(process.env.MONGO_URI, {
 
         })
-        .then(() => console.log('MongoDB is connected'))
+        .then((c) => console.log(`MongoDB is connected at ${c.connection.host}`))
         .catch((e) => console.log(e));
 }

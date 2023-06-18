@@ -10,7 +10,7 @@ export const newTask = async (req, res, next) => {
   })
 
   res.status(200).json({
-    success: "true",
+    succss: "true",
     message: "task created"
   })
 }
